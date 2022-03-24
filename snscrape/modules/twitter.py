@@ -610,6 +610,11 @@ class _TwitterAPIScraper(snscrape.base.Scraper):
 				i = kwargs['tcooutlinks'].index(card.url)
 			except ValueError:
 				_logger.warning('Could not find card URL in tcooutlinks')
+
+			### ADDED BY ME! START
+			except KeyError:
+				_logger.warning('Could not find key tcooutlinks')
+			### ADDED BY ME! END
 			else:
 				card.url = kwargs['outlinks'][i]
 		return Tweet(**kwargs)
@@ -629,6 +634,11 @@ class _TwitterAPIScraper(snscrape.base.Scraper):
 				cardKwargs[kwarg] = value['image_value']['url']
 			else:
 				raise snscrape.base.ScraperError(f'Unknown card value type: {value["type"]!r}')
+
+			### ADDED BY ME! START
+			if 'title' not in cardKwargs:
+				cardKwargs['title'] = 'THIS IS A TWEET LINKING A TWITTER SPACE'
+			### ADDED BY ME! END
 		return Card(**cardKwargs)
 
 	def _tweet_to_tweet(self, tweet, obj):
